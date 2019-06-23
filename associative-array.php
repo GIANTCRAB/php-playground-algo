@@ -2,20 +2,20 @@
 
 class AssociativeArray
 {
-    private array $keys;
-    private array $values;
-    private int $size;
+    private $keys = [];
+    private $values = [];
+    private $size = 0;
 
     public function __construct()
     {
     }
 
-    public function getKeyValue(string $key): string
+    public function getKeyValue(string $key): ?string
     {
         $keyIndex = $this->getKeyIndex($key);
         if ($keyIndex === -1) {
             // Does not exists
-            return null;
+            throw new KeyDoesNotExistsException('Key does not exists');
         }
 
         return $this->getValue($keyIndex);
@@ -30,6 +30,11 @@ class AssociativeArray
         } else {
             $this->setValue($keyIndex, $value);
         }
+    }
+
+    public function keyExists(string $key): bool
+    {
+        return $this->getKeyIndex($key) !== -1;
     }
 
     public function setKey(int $index, string $key): void
@@ -47,14 +52,14 @@ class AssociativeArray
         $this->values[$index] = $value;
     }
 
-    public function setSize(int $size): void
-    {
-        $this->size = $size;
-    }
-
     public function getSize(): int
     {
         return $this->size;
+    }
+
+    private function setSize(int $size): void
+    {
+        $this->size = $size;
     }
 
     private function getKeyIndex(string $key): int
@@ -78,4 +83,9 @@ class AssociativeArray
 
         return $currentSize;
     }
+}
+
+class KeyDoesNotExistsException extends Exception
+{
+
 }
