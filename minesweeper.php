@@ -45,14 +45,18 @@ class MineSweeper
         return $this;
     }
 
-    public function printMineMap()
+    public function getMineMap()
     {
+        $result = '';
+
         for($i = 0; $i < $this->totalCount; $i++) {
             if($i !== 0 && $i % $this->columns === 0) {
-                echo "\n";
+                $result .= "\n";
             }
-            echo $this->map[$i];
+            $result .= $this->map[$i];
         }
+
+        return $result;
     }
 }
 
@@ -62,8 +66,16 @@ $mines = "*....
 .....";
 
 $mineSweeper = new MineSweeper(5, 4, $mines);
-$mineSweeper->parseMines()
-    ->printMineMap();
+$mineMap = $mineSweeper->parseMines()->getMineMap();
+
+$expectedResult = "*1000
+22000
+*1000
+11000";
+
+if($mineMap === $expectedResult) {
+    echo 'test 1 passed';
+}
 
 echo "\n\n";
 
@@ -73,8 +85,17 @@ $mines = "....*
 .....";
 
 $mineSweeper = new MineSweeper(5, 4, $mines);
-$mineSweeper->parseMines()
-    ->printMineMap();
+$mineMap = $mineSweeper->parseMines()->getMineMap();
+
+$expectedResult = "0001*
+00022
+0001*
+00011";
+
+if($mineMap === $expectedResult) {
+    echo 'test 2 passed';
+}
+
 
 echo "\n\n";
 
@@ -84,5 +105,13 @@ $mines = "*....
 .....";
 
 $mineSweeper = new MineSweeper(5, 4, $mines);
-$mineSweeper->parseMines()
-    ->printMineMap();
+$mineMap = $mineSweeper->parseMines()->getMineMap();
+
+$expectedResult = "*1000
+22100
+1*100
+11100";
+
+if($mineMap === $expectedResult) {
+    echo 'test 3 passed';
+}
